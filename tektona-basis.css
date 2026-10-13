@@ -1,0 +1,303 @@
+/* ##########################################################################
+   TEKTONA BASIS
+   Gemeinsame Datei für Website und alle Werkzeuge.
+   Jede Seite lädt sie im <head>:
+     <link rel="stylesheet" href="tektona-basis.css?v=2026-10-13.4">
+     <script src="tektona-basis.js?v=2026-10-13.4"></script>
+   Nach jeder Änderung an dieser Datei oder tektona-basis.js die Zahl hinter ?v=
+   in allen Seiten erhöhen. Sonst zeigt der Browser die alte, zwischengespeicherte Fassung.
+
+   Aufbau
+     1  Farben             einzige Stelle mit Farbwerten
+     2  Schrift und Masse
+     3  Logo               Quelle: GitHub (herma-ch/Tektona_Brand), lokale Datei als Ersatz
+     4  Gemeinsamer Kopf
+     5  Druck              Seitenrahmen, Kopfrahmen, Druckvorschau am Bildschirm
+     6  Hervorhebung       Darüberfahren und gewählter Zustand, gleich überall
+   ########################################################################## */
+
+
+/* ==========================================================================
+   1  FARBEN
+   Jeder Farbwert steht genau einmal in der Palette (1a).
+   Die Rollen (1b–1d) verweisen nur auf die Palette.
+   Website und Werkzeuge lesen diese Werte; dort stehen keine eigenen Farben.
+   ========================================================================== */
+
+/* 1a  Palette: alle Farbwerte */
+:root {
+  --c-orange:        #FF7900;   /* Marke: Hauptaktion, aktiver Menüpunkt */
+  --c-orange-dark:   #A84F00;   /* orange Schrift auf hellem Grund */
+  --c-orange-light:  #FF8A1F;   /* orange Schrift auf dunklem Grund */
+  --c-orange-deep:   #3A2414;   /* orange getönte Fläche, dunkel */
+  --c-orange-pale:   #FFF0E3;   /* orange getönte Fläche, hell */
+  --c-navy:          #111827;   /* Logo und Hervorhebung (Darüberfahren, gewählt) */
+
+  --c-white:         #FFFFFF;
+  --c-black:         #000000;   /* nur für Schatten und Abdunklung */
+  --c-ink:           #16181B;   /* Schrift auf Papier (Druck, Export) */
+
+  --c-graphite-950:  #121314;
+  --c-graphite-925:  #141516;
+  --c-graphite-900:  #1A1B1D;
+  --c-graphite-850:  #212225;
+  --c-graphite-800:  #2A2B2F;
+  --c-graphite-750:  #2E3033;
+  --c-graphite-700:  #3D4045;
+  --c-graphite-500:  #5F6166;
+  --c-graphite-400:  #8E9095;
+  --c-graphite-300:  #C9C9C6;
+  --c-graphite-250:  #D6D6D3;
+  --c-graphite-200:  #E0E0DE;
+  --c-graphite-150:  #E8E8E6;
+  --c-graphite-100:  #EDEDEC;
+  --c-graphite-50:   #F2F2F1;
+
+  --c-blue:          #1971C2;   /* Tastaturfokus, hell */
+  --c-blue-light:    #4DABF7;   /* Tastaturfokus, dunkel */
+  --c-blue-select:   #0A9BFF;   /* Auswahl in Zeichnungen */
+  --c-green:         #237032;
+  --c-green-light:   #5BC870;
+  --c-yellow:        #FFD100;
+  --c-yellow-dark:   #7A5C00;
+  --c-yellow-light:  #F5C842;
+  --c-yellow-pale:   #FEF3C7;
+  --c-yellow-deep:   #3A2E10;
+  --c-red:           #C92A2A;
+  --c-red-light:     #FF6B6B;
+}
+
+/* 1b  Rollen, dunkles Thema (Standard) */
+:root {
+  --bg:          var(--c-graphite-900);   /* Seitengrund */
+  --head-bg:     var(--c-graphite-925);   /* gemeinsamer Kopf */
+  --panel:       var(--c-graphite-850);   /* Panels, Karten, Knöpfe */
+  --panel-2:     var(--c-graphite-800);   /* Eingabefelder, Hover */
+  --ph:          var(--c-graphite-800);   /* Bildplatzhalter */
+  --stage:       var(--c-graphite-950);   /* Zeichenfläche in Werkzeugen */
+  --line:        var(--c-graphite-750);   /* Trennlinien */
+  --line-2:      var(--c-graphite-700);   /* Rahmen von Bedienelementen */
+  --fg:          var(--c-graphite-150);   /* Text */
+  --muted:       var(--c-graphite-400);   /* Nebentext */
+  --accent:      var(--c-orange);
+  --on-accent:   var(--c-graphite-925);   /* Schrift auf Orange */
+  --accent-text: var(--c-orange-light);
+  --accent-soft: var(--c-orange-deep);
+  --ok:          var(--c-green-light);
+  --warn:        var(--c-yellow-light);
+  --warn-fill:   var(--c-yellow);
+  --warn-soft:   var(--c-yellow-deep);
+  --danger:      var(--c-red-light);
+  --focus:       var(--c-blue-light);
+  --select:      var(--c-blue-select);
+  --icon:        var(--c-graphite-150);   /* Symbole in Knöpfen und Panels (ändern sich nie) */
+  --link-hover:  var(--c-orange);         /* Telefon, E-Mail, Links beim Darüberfahren */
+  --hl-bg:       var(--c-navy);           /* Hervorhebung: Fläche */
+  --hl-title:    var(--c-orange);         /* Hervorhebung: Titel */
+  --hl-text:     var(--c-white);          /* Hervorhebung: Text unter dem Titel */
+  --shadow:      color-mix(in srgb, var(--c-black) 45%, transparent);
+  --backdrop:    color-mix(in srgb, var(--c-black) 55%, transparent);
+  color-scheme: dark;
+}
+
+/* 1c  Rollen, helles Thema (Schalter im Kopf) */
+:root[data-tk="light"],
+:root:not([data-tk])[data-theme="light"] {
+  --bg:          var(--c-graphite-50);
+  --head-bg:     var(--c-white);
+  --panel:       var(--c-white);
+  --panel-2:     var(--c-graphite-100);
+  --ph:          var(--c-graphite-200);
+  --stage:       var(--c-graphite-250);
+  --line:        var(--c-graphite-200);
+  --line-2:      var(--c-graphite-300);
+  --fg:          var(--c-graphite-900);
+  --muted:       var(--c-graphite-500);
+  --on-accent:   var(--c-graphite-925);
+  --accent-text: var(--c-orange-dark);
+  --accent-soft: var(--c-orange-pale);
+  --ok:          var(--c-green);
+  --warn:        var(--c-yellow-dark);
+  --warn-soft:   var(--c-yellow-pale);
+  --danger:      var(--c-red);
+  --focus:       var(--c-blue);
+  --icon:        var(--c-graphite-500);
+  --link-hover:  var(--c-orange-dark);
+  --shadow:      color-mix(in srgb, var(--c-black) 14%, transparent);
+  --backdrop:    color-mix(in srgb, var(--c-black) 40%, transparent);
+  color-scheme: light;
+}
+
+/* 1d  Rollen, Druck (Klasse .pp wird beim Drucken gesetzt) */
+:root.pp {
+  --bg:          var(--c-white);
+  --head-bg:     var(--c-white);
+  --panel:       var(--c-white);
+  --panel-2:     var(--c-graphite-50);
+  --ph:          var(--c-graphite-100);
+  --stage:       var(--c-white);
+  --line:        var(--c-graphite-250);
+  --line-2:      var(--c-graphite-300);
+  --fg:          var(--c-ink);
+  --muted:       var(--c-graphite-500);
+  --accent-text: var(--c-orange-dark);
+  --accent-soft: var(--c-white);
+  --frame:       var(--c-ink);            /* Seitenrahmen und Kopfrahmen */
+  color-scheme: light;
+}
+/* Ende Farben */
+
+
+/* ==========================================================================
+   2  SCHRIFT UND MASSE
+   ========================================================================== */
+:root {
+  --f-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
+  --f-body:    "Barlow", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --f-mono:    "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --r-sm: 4px;  --r: 6px;  --r-lg: 8px;      /* Eckenradien */
+  --head-h: 72px;                            /* Höhe gemeinsamer Kopf, inkl. Linie */
+  --page-w: 1200px;                          /* Inhaltsbreite Website */
+}
+[hidden] { display: none !important; }
+.only-print { display: none; }
+
+
+/* ==========================================================================
+   3  LOGO
+   Wird direkt aus dem GitHub-Repository geladen. Ist GitHub nicht erreichbar,
+   zeigt die lokale Datei im selben Ordner (zweites Bild) dasselbe Logo.
+   l-dark = Logo für dunklen Grund, l-light = Logo für hellen Grund und Druck.
+   ========================================================================== */
+.tk-logo .l-dark  { background-image: url("https://raw.githubusercontent.com/herma-ch/Tektona_Brand/main/Tektona%20Logo/tektona_logo_stamp_orange_white.png"),
+                                      url("tektona_logo_stamp_orange_white.png"); }
+.tk-logo .l-light { background-image: url("https://raw.githubusercontent.com/herma-ch/Tektona_Brand/main/Tektona%20Logo/tektona_logo_stamp_orange_navy.png"),
+                                      url("tektona_logo_stamp_orange_navy.png"); }
+.tk-logo span {
+  display: block; height: 44px; aspect-ratio: 884 / 329;
+  background-repeat: no-repeat; background-position: left center; background-size: contain;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+
+
+/* ==========================================================================
+   4  GEMEINSAMER KOPF
+   Website: Menü (.tk-nav). Werkzeug: Name und Rückweg (.tk-context), Klasse .full.
+   ========================================================================== */
+.tk-head {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: var(--head-bg); border-bottom: 1px solid var(--line);
+}
+.tk-head-in {
+  display: flex; align-items: center; gap: 24px; height: calc(var(--head-h) - 1px);
+  max-width: var(--page-w); margin-inline: auto; padding-inline: 32px;
+}
+.tk-head.full .tk-head-in { max-width: none; padding-inline: 16px; }
+.tk-logo { flex: none; display: block; }
+.tk-logo .l-light { display: none; }
+:root[data-tk="light"] .tk-logo .l-dark,
+:root:not([data-tk])[data-theme="light"] .tk-logo .l-dark { display: none; }
+:root[data-tk="light"] .tk-logo .l-light,
+:root:not([data-tk])[data-theme="light"] .tk-logo .l-light { display: block; }
+
+.tk-nav { display: flex; gap: 2px; margin-left: auto; }
+.tk-nav a { padding: 8px 12px; border-radius: var(--r); color: var(--muted); font-size: 15px; font-weight: 500; text-decoration: none; }
+.tk-nav a.on { color: var(--fg); background: none; border-radius: 0; box-shadow: inset 0 -2px 0 var(--accent); }
+
+.tk-context { display: flex; align-items: baseline; gap: 16px; min-width: 0; margin-right: auto; }
+.tk-context b { font-family: var(--f-display); font-size: 21px; font-weight: 600; white-space: nowrap; }
+.tk-context a { color: var(--muted); font-size: 14px; text-decoration: none; white-space: nowrap; }
+
+.tk-tools { display: flex; align-items: center; gap: 6px; }
+.tk-tools .btn { height: 36px; }
+.tk-tools .btn.icon { width: 36px; padding: 0; }
+.tk-tools .btn svg { width: 17px; height: 17px; flex: none; }
+.tk-tools .tel span { font-family: var(--f-mono); font-size: 14px; }
+.tk-print-contact { margin-left: auto; }
+
+@media (max-width: 960px) { .tk-nav { display: none; } .tk-tools { margin-left: auto; } }
+@media (max-width: 700px) { .tk-head-in { padding-inline: 16px; gap: 12px; } }
+@media (max-width: 520px) { .tk-tools .tel span, .tk-context a { display: none; } .tk-logo span { height: 36px; } }
+
+
+/* ==========================================================================
+   5  DRUCK
+   tektona-basis.js setzt beim Drucken und in der Druckvorschau die Klasse .pp
+   auf <html> und meldet das der Seite (Ereignisse tk:printstart / tk:printend).
+   Die Seite ergänzt eigene .pp-Regeln für ihren Inhalt.
+   ========================================================================== */
+@page { size: A4; margin: 10mm; border: 0.35mm solid; padding: 6mm; }   /* Seitenrahmen (Chrome, Edge) */
+@media print {
+  html, body { background: var(--c-white) !important; }
+  .pp-bar { display: none !important; }
+}
+
+html.pp, .pp body { height: auto; }
+.pp body { font-size: 10.5pt; line-height: 1.45; }
+.pp .only-print { display: block; }
+.pp .tk-head { position: static; border: 0.35mm solid var(--frame); box-shadow: inset 0 -0.7mm 0 var(--accent); }
+.pp .tk-head-in { height: auto; max-width: none; padding: 4mm 5mm 4.6mm; }
+.pp .tk-nav, .pp .tk-tools, .pp .tk-context a { display: none; }
+.pp .tk-logo .l-dark { display: none; }
+.pp .tk-logo .l-light { display: block; height: 12mm; }
+.pp .tk-print-contact { display: flex; flex-direction: column; align-items: flex-end; gap: 0.6mm; font: 8.5pt/1.3 var(--f-mono); }
+
+/* 5.1  Druckvorschau am Bildschirm (Druckknopf im Kopf) */
+.pp-bar { display: none; }
+html.pp-preview { background: var(--c-graphite-500); }
+html.pp-preview body {
+  width: 210mm; max-width: calc(100% - 32px); margin: 68px auto 40px; padding: 16mm;
+  background: var(--c-white); outline: 0.35mm solid var(--frame); outline-offset: -10mm;
+  box-shadow: 0 10px 40px var(--shadow);
+}
+html.pp-preview .pp-bar {
+  display: flex; align-items: center; gap: 12px;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 60; height: 52px; padding-inline: 16px;
+  background: var(--c-graphite-925); color: var(--c-graphite-150); font: 14px var(--f-body);
+}
+html.pp-preview .pp-bar .pp-hint { color: var(--c-graphite-400); font: 13px var(--f-mono); }
+html.pp-preview .pp-bar button {
+  height: 34px; padding: 0 13px; border-radius: var(--r); cursor: pointer;
+  border: 1px solid var(--c-graphite-700); background: var(--c-graphite-850); color: var(--c-graphite-150); font: 500 14px var(--f-body);
+}
+html.pp-preview .pp-bar button:first-of-type { margin-left: auto; }
+@media (max-width: 600px) {
+  html.pp-preview body { padding: 10mm 8mm; outline-offset: -5mm; }
+  html.pp-preview .pp-bar .pp-hint { display: none; }
+}
+
+
+/* ==========================================================================
+   6  HERVORHEBUNG (Darüberfahren und gewählter Zustand)
+   Regel für Website und Werkzeuge:
+     Fläche navy, Titel orange, Text darunter weiss, Symbole bleiben, kein heller Rahmen.
+     Telefon, E-Mail und Links: Schrift orange.
+     Orange Hauptaktion: Schrift weiss.
+   Gewählt (aria-pressed, geöffnet, aktiv) sieht aus wie Darüberfahren.
+   Seiten ergänzen dieselbe Regel für ihre eigenen Panels (z.B. Leistungen, FAQ).
+   ========================================================================== */
+.btn, .chip, a.bigact, button.bigact, .card, .tk-nav a {
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+
+/* Knöpfe und Chips */
+.btn:not(.primary):not(:disabled):hover,
+.btn[aria-pressed="true"],
+.chip:hover,
+.chip[aria-pressed="true"] { background: var(--hl-bg); border-color: var(--hl-bg); color: var(--hl-title); }
+.btn.primary:not(:disabled):hover { color: var(--hl-text); filter: none; }
+
+/* Panels zum Anklicken: Titel <b>, Text darunter <span> */
+a.bigact:hover, button.bigact:hover, .card:hover { background: var(--hl-bg); border-color: var(--hl-bg); }
+a.bigact:hover b, button.bigact:hover b, .card:hover b { color: var(--hl-title); }
+a.bigact:hover span, button.bigact:hover span, .card:hover span { color: var(--hl-text); }
+
+/* Menü im Kopf */
+.tk-nav a:hover { background: var(--hl-bg); color: var(--hl-title); }
+
+/* Telefon, E-Mail, Textlinks */
+a[href^="tel:"]:hover, a[href^="mailto:"]:hover, .tk-context a:hover { color: var(--link-hover); }
+
+/* Symbole ändern ihre Farbe nicht */
+.btn svg, .bigact > svg { color: var(--icon); }
+
